@@ -23,6 +23,19 @@ public class titleLazerpointer : MonoBehaviour {
 
     public Material Select1;
 
+    IEnumerator LoadSceneAndWait()
+    {
+        float start = Time.realtimeSinceStartup;
+        AsyncOperation ope = SceneManager.LoadSceneAsync("gamescene");
+        ope.allowSceneActivation = false;
+
+        while (Time.realtimeSinceStartup - start < 1) 
+        {
+            yield return null;
+        }
+        ope.allowSceneActivation = true;
+    }
+
     // コントローラー
     public Transform Pointer
     {
@@ -45,7 +58,7 @@ public class titleLazerpointer : MonoBehaviour {
 
     private void Start()
     {
-
+        
     }
 
     void Update()
@@ -72,17 +85,24 @@ public class titleLazerpointer : MonoBehaviour {
             {
                 if (hitInfo.collider.gameObject.name == "switch")
                 {
-                    SceneManager.LoadScene("gamescene");
+                    StartCoroutine("LoadSceneAndWait");
                 }
-
-                obj = hitInfo.collider.gameObject;
-                Select1 = hitInfo.collider.gameObject.GetComponent<Renderer>().material;
+                if (hitInfo.collider.gameObject.name == "Cube1"
+                    || hitInfo.collider.gameObject.name == "Cube2")
+                {
+                    obj = hitInfo.collider.gameObject;
+                    Select1 = hitInfo.collider.gameObject.GetComponent<Renderer>().material;
+                }
             }
             if (OVRInput.GetUp(OVRInput.Button.PrimaryIndexTrigger))
             {
-                Material Select2 = hitInfo.collider.gameObject.GetComponent<Renderer>().material;
-                hitInfo.collider.gameObject.GetComponent<Renderer>().material = Select1;
-                obj.GetComponent<Renderer>().material = Select2;
+                if (hitInfo.collider.gameObject.name == "Cube1"
+                    || hitInfo.collider.gameObject.name == "Cube2")
+                {
+                    Material Select2 = hitInfo.collider.gameObject.GetComponent<Renderer>().material;
+                    hitInfo.collider.gameObject.GetComponent<Renderer>().material = Select1;
+                    obj.GetComponent<Renderer>().material = Select2;
+                }
             }
         }
         else

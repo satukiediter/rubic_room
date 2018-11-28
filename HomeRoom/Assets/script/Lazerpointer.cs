@@ -21,9 +21,7 @@ public class Lazerpointer : MonoBehaviour {
     [SerializeField]
     GameObject maincamera;
 
-    public GameObject obj;
-
-    public Material Select1;
+    GameObject obj1,obj2;
 
     GameObject T;
 
@@ -76,14 +74,12 @@ public class Lazerpointer : MonoBehaviour {
             _LaserPointerRenderer.SetPosition(1, hitInfo.point);
             if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger))
             {
-                obj = hitInfo.collider.gameObject;
-                Select1 = hitInfo.collider.gameObject.GetComponent<Renderer>().material;
+                obj1 = hitInfo.collider.gameObject;
             }
             if (OVRInput.GetUp(OVRInput.Button.PrimaryIndexTrigger))
             {
-                Material Select2 = hitInfo.collider.gameObject.GetComponent<Renderer>().material;
-                hitInfo.collider.gameObject.GetComponent<Renderer>().material = Select1;
-                obj.GetComponent<Renderer>().material = Select2;
+                obj2 = hitInfo.collider.gameObject;
+                obj1.GetComponent<cubeManeger>().ChengeColor(obj2);
                 T.GetComponent<textmaneger>().count += 1;
             }
 
